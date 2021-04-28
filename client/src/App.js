@@ -23,6 +23,7 @@ import Report from './components/pages/Report/Report';
 
 import AllNotes from './components/Notes/AllNotes';
 import EditNote from './components/Notes/EditNote';
+
 import Settings from './components/ProjectSettings/Setting';
 
 import Invite from './components/Invite/InviteTeams';
@@ -31,7 +32,7 @@ import InviteApi from './components/Invite/InviteApi';
 import Announcementdisplay from './components/Announcements/Announcementdisplay';
 
 import ContactState from './context/contact/ContactState';
-import NoteState from './context/notes/NoteState';
+
 import EventState from './context/newEvent/EventState';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alert/AlertState';
@@ -58,6 +59,49 @@ function App()  {
     setColorTheme(theme);
     localStorage.setItem('theme-color', theme)
   }
+  
+
+
+  // editing
+  const [notes, setNotes] = useState('')
+  const [editing, setEditing] = useState(false)
+
+  const initialFormState = { id: null, title: '', description: '' }
+
+  const [currentNote, setCurrentNote] = useState(initialFormState)
+
+  const editRow = (note) => {
+    setEditing(true)
+  
+    setCurrentNote({ id: note.id, title: note.title, description: note.description })
+  }
+
+  <AllNotes  editRow={editRow}  />
+
+
+  const updateNote = (id, updatedNote) => {
+    setEditing(false)
+  
+    setNotes(notes.map((note) => (note.id === id ? updatedNote : note)))
+  }
+
+  <div className="flex-large">
+  {editing ? (
+    <div>
+      <h2>Edit Note</h2>
+      <EditNote
+        setEditing={setEditing}
+        currentNote={currentNote}
+        updateNote={updateNote}
+      />
+    </div>
+  ) : (
+    <div>
+      <h2>Add Note</h2>
+     
+    </div>
+  )}
+</div>
 
   return (
    
@@ -108,7 +152,8 @@ function App()  {
 
             
               <Route exact path='/AllNotes' component={AllNotes} />
-              <Route exact path='/EditNote/:id' component={EditNote} />
+              <Route exact path='/EditNote' component={EditNote} />
+             
 
             <Route exact path='/Invite' component={Invite} />
             <Route exact path='/InviteApi' component={InviteApi} />

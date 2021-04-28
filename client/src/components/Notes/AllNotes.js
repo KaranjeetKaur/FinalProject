@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const AllNotes = () => {
+const AllNotes = (props) => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -24,13 +24,13 @@ const AllNotes = () => {
             window.location.reload(false);
     })
 }
-const EditNote = (id) => {
-  axios.put(`http://localhost:5000/api/notes/${id}`).then ( () => {
+// const EditNote = (id) => {
+//   axios.put(`http://localhost:5000/api/notes/${id}`).then ( () => {
 
   
          
-  })
-}
+//   })
+// }
 
 
 
@@ -45,7 +45,9 @@ const EditNote = (id) => {
         <td>{note.title}</td>
         <td>{note.description}</td>
         <td>
-        <button   className='btn btn-dark btn-sm'>
+        <button onClick={() => {
+    props.editRow(note)
+  }}  className='btn btn-dark btn-sm'>
        
             Edit
             </button >
